@@ -127,9 +127,8 @@ The main features are:
 
 | Name          | Role        |
 | ------------- | ----------- |
-| Team Member 1 | To be added |
-| Team Member 2 | To be added |
-| Team Member 3 | To be added |
+| Aletta        | To be added |
+| Ngakoana      | To be added |
 
 ## Project Status
 
@@ -142,4 +141,3 @@ The project is currently being planned and developed. We are working on the proj
 The SkillsTrack Learner Support Portal will give learners one place to manage their tasks, support bookings and progress.
 
 It will also make it easier for assessors to see learner activity and identify learners who may need support.
-# SkillsTrack-Learner-Support-Portal
