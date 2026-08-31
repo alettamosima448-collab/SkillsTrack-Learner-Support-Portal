@@ -46,4 +46,4 @@ I will use the browser, developer tools, console and Firebase console.
 
 ## Goal
 
-By the end of Month 1, the basic portal should work and the main problems found during testing should be fixed.
+By the end  the basic portal should work and the main problems found during testing should be fixed.
