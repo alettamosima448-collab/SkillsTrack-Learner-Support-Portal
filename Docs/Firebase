@@ -1,401 +1,348 @@
-# Firebase
+# Firebase Realtime Database Plan
 
-## 1. Overview
+## 1. Firebase Database
 
-Firebase will be used as the backend service for the Learner Support Portal. It will provide user authentication and cloud-based data storage for the main features of the system.
+The SkillsTrack Learner Support Portal will use **Firebase Realtime Database** to store application data. Firebase will allow the application to store, retrieve, update and delete learner information and application records.
 
-The project will use:
-
-* **Firebase Authentication** for learner registration and login.
-* **Firebase Realtime Database** for storing application data.
-* **Firebase REST API** for communication between the website and the database.
-* **Firebase Security Rules** to control access to stored data.
-
-The main information stored in Firebase will include learner profiles, tasks, support bookings, game scores and learning resources.
-
----
-
-## 2. Firebase Authentication
-
-Firebase Authentication will manage user accounts within the application.
-
-Learners will be able to:
-
-* Register a new account.
-* Log in to their account.
-* Log out of the application.
-* Remain authenticated while using the portal.
-
-Each Firebase Authentication account will have a unique `uid`. This ID will be used to connect the authenticated user with their records in the Realtime Database.
-
-### Authentication Flow
-
-```text
-Learner
-   ↓
-Registration / Login
-   ↓
-Firebase Authentication
-   ↓
-Authenticated User
-   ↓
-User UID
-   ↓
-Learner Data in Realtime Database
-```
-
-Passwords will be managed by Firebase Authentication and will not be stored directly in the application's database.
-
----
-
-## 3. Realtime Database
-
-Firebase Realtime Database will be used to store the information required by the Learner Support Portal.
-
-The planned database structure is:
+The database will contain the following main areas:
 
 ```text
 users/
+    {uid}/
+        displayName
+        email
+        role
+        createdAt
+
 tasks/
+    {taskId}/
+        userId
+        title
+        category
+        dueDate
+        priority
+        completed
+        createdAt
+
 bookings/
+    {bookingId}/
+        userId
+        topic
+        preferredDate
+        notes
+        status
+
 scores/
+    {scoreId}/
+        userId
+        score
+        duration
+        completedAt
+
 resources/
+    {resourceId}/
+        title
+        type
+        url
+        description
 ```
 
-A user's Firebase Authentication `uid` will be used where data needs to be associated with a specific learner.
+This structure is based on the suggested Firebase structure in the project brief.
 
 ---
 
-## 4. Database Structure
+## 2. Users
 
-### 4.1 Users
+The `users` section stores basic information about registered users.
 
-The `users` collection will contain basic information about registered learners.
+Example:
 
 ```text
-users/{uid}
-    displayName
-    email
-    role
-    createdAt
+users/
+    abc123/
+        displayName: "Lerato"
+        email: "lerato@example.com"
+        role: "learner"
+        createdAt: "2026-08-31T10:00:00"
 ```
 
-| Field         | Description                           |
-| ------------- | ------------------------------------- |
-| `displayName` | Learner's display name                |
-| `email`       | Learner's email address               |
-| `role`        | User role within the application      |
-| `createdAt`   | Date and time the account was created |
+The `{uid}` represents the authenticated Firebase user's unique ID.
 
-The `{uid}` value will correspond to the user's Firebase Authentication ID.
+The user's password will NOT be stored in the database. Passwords must be handled by Firebase Authentication.
 
 ---
 
-### 4.2 Tasks
+## 3. Tasks
 
-The `tasks` collection will store learning and study tasks created by learners.
+The `tasks` section stores learner learning tasks.
+
+Example:
 
 ```text
-tasks/{taskId}
-    userId
-    title
-    category
-    dueDate
-    priority
-    completed
-    createdAt
+tasks/
+    task001/
+        userId: "abc123"
+        title: "Complete JavaScript exercise"
+        category: "JavaScript"
+        dueDate: "2026-09-05"
+        priority: "High"
+        completed: false
+        createdAt: "2026-08-31T10:30:00"
 ```
 
-| Field       | Description                         |
-| ----------- | ----------------------------------- |
-| `userId`    | ID of the learner who owns the task |
-| `title`     | Name of the task                    |
-| `category`  | Task category                       |
-| `dueDate`   | Task deadline                       |
-| `priority`  | Task priority                       |
-| `completed` | Whether the task has been completed |
-| `createdAt` | Date and time the task was created  |
+The `userId` connects the task to the learner who created it.
 
-The `userId` field will be used to identify the learner who owns each task.
+This allows the application to display the correct learner's tasks and calculate completed, outstanding and overdue work.
 
 ---
 
-### 4.3 Support Bookings
+## 4. Support Bookings
 
-The `bookings` collection will store requests for learner support sessions.
+The `bookings` section stores support-session requests.
+
+Example:
 
 ```text
-bookings/{bookingId}
-    userId
-    topic
-    preferredDate
-    notes
-    status
+bookings/
+    booking001/
+        userId: "abc123"
+        topic: "JavaScript Functions"
+        preferredDate: "2026-09-03"
+        notes: "I need help understanding functions."
+        status: "pending"
 ```
 
-| Field           | Description                                 |
-| --------------- | ------------------------------------------- |
-| `userId`        | Learner who made the booking                |
-| `topic`         | Subject or area the learner needs help with |
-| `preferredDate` | Requested support date                      |
-| `notes`         | Additional information from the learner     |
-| `status`        | Current booking status                      |
-
-The `status` field can be used for values such as `pending`, `approved` or `completed`, depending on the final application requirements.
+The booking starts with a status such as `pending`. An assessor or administrator can update the booking status where that functionality is included in the approved scope.
 
 ---
 
-### 4.4 Game Scores
+## 5. Game Scores
 
-The `scores` collection will store results from the coding game.
+The `scores` section stores results from the mini-game or quiz.
+
+Example:
 
 ```text
-scores/{scoreId}
-    userId
-    score
-    duration
-    completedAt
+scores/
+    score001/
+        userId: "abc123"
+        score: 80
+        duration: 45
+        completedAt: "2026-09-10T12:00:00"
 ```
 
-| Field         | Description                          |
-| ------------- | ------------------------------------ |
-| `userId`      | Learner who achieved the score       |
-| `score`       | Game score                           |
-| `duration`    | Time taken to complete the game      |
-| `completedAt` | Date and time the game was completed |
-
-This data can be used to display previous results and track learner performance.
+The `userId` identifies which learner achieved the score.
 
 ---
 
-### 4.5 Learning Resources
+## 6. Learning Resources
 
-The `resources` collection will contain resources that learners can access from the portal.
+The optional `resources` section stores learning resources.
 
-```text
-resources/{resourceId}
-    title
-    type
-    url
-    description
-```
-
-| Field         | Description                       |
-| ------------- | --------------------------------- |
-| `title`       | Resource name                     |
-| `type`        | Type of resource                  |
-| `url`         | Location of the resource          |
-| `description` | Short description of the resource |
-
-Resources may include websites, documents, videos or other learning material.
-
----
-
-## 5. Firebase REST API
-
-The Firebase Realtime Database REST API will be used to send requests between the website and Firebase.
-
-The main HTTP methods are:
-
-| Method   | Purpose                    |
-| -------- | -------------------------- |
-| `GET`    | Retrieve data              |
-| `POST`   | Create a new record        |
-| `PUT`    | Replace an existing record |
-| `PATCH`  | Update selected fields     |
-| `DELETE` | Remove a record            |
-
-These methods will provide the database operations required by the application.
-
----
-
-## 6. CRUD Operations
-
-The task management feature will use CRUD operations.
-
-### Create
-
-A learner can create a new task.
+Example:
 
 ```text
-POST
-```
-
-The new task information will be sent to Firebase and stored under the `tasks` section.
-
-### Read
-
-The application can retrieve tasks belonging to the current learner.
-
-```text
-GET
-```
-
-The returned data will then be displayed on the learner's dashboard.
-
-### Update
-
-A learner can edit an existing task or change its completion status.
-
-```text
-PUT / PATCH
-```
-
-`PATCH` can be used when only specific fields need to be changed.
-
-### Delete
-
-A learner can remove a task after confirming the deletion.
-
-```text
-DELETE
+resources/
+    resource001/
+        title: "JavaScript Functions"
+        type: "article"
+        url: "https://example.com/javascript-functions"
+        description: "Introduction to JavaScript functions."
 ```
 
 ---
 
-## 7. Data Validation
+# REST API Plan
 
-Data will be checked before it is sent to Firebase.
+The application will use the Firebase Realtime Database REST API to communicate with Firebase.
 
-Examples of validation include:
+## GET — Read Data
 
-* Required fields must contain information.
-* Text fields must contain valid values.
-* Dates must use the expected format.
-* Task information must be associated with a valid user.
-* Invalid or incomplete requests should not be saved.
+GET will be used to retrieve data from Firebase.
 
-Validation will be handled on the application side, with Firebase Security Rules providing an additional level of protection.
+Example:
+
+```text
+GET /tasks.json
+```
+
+Purpose:
+
+* Retrieve learner tasks.
+* Display tasks on the dashboard.
+* Calculate progress.
+* Search and filter task information.
 
 ---
 
-## 8. Database Security
+## POST — Create Data
 
-Firebase Security Rules will be used to control access to the Realtime Database.
+POST will be used when a new record needs to be created.
 
-The database should not allow unrestricted public access.
+Example:
 
-Where appropriate, learners should only be able to access and modify records belonging to their own account.
+```text
+POST /tasks.json
+```
+
+Purpose:
+
+* Create a new learning task.
+* Firebase generates a unique task ID.
+
+---
+
+## PUT — Replace Data
+
+PUT will be used when an existing Firebase record needs to be completely replaced.
+
+Example:
+
+```text
+PUT /tasks/{taskId}.json
+```
+
+Purpose:
+
+* Replace all information belonging to a specific task.
+
+---
+
+## PATCH — Update Data
+
+PATCH will be used to change selected fields without replacing the entire record.
+
+Example:
+
+```text
+PATCH /tasks/{taskId}.json
+```
+
+Purpose:
+
+* Change the task's completion status.
+* Change the priority.
+* Change the due date.
+
+For example:
+
+```json
+{
+    "completed": true
+}
+```
+
+---
+
+## DELETE — Delete Data
+
+DELETE will be used to remove a task.
+
+Example:
+
+```text
+DELETE /tasks/{taskId}.json
+```
+
+Before deleting a task, the application will show a confirmation dialog so that the user does not accidentally delete important information.
+
+---
+
+# Firebase Security Plan
+
+The database must not allow unrestricted public write access. Users should only access information appropriate to their authenticated identity and role.
+
+The application will use the authenticated user's Firebase UID to identify ownership.
 
 For example:
 
 ```text
-Authenticated User
-       ↓
-Check User UID
-       ↓
-Compare with userId
-       ↓
-Allow or deny access
+tasks/
+    task001/
+        userId: "abc123"
 ```
 
-Different access levels may be required for learners, assessors or administrators. These permissions will depend on the final roles included in the project.
+If the authenticated user has UID `abc123`, the application can determine that the task belongs to that user.
 
-Private credentials and service-account files must not be committed to the project's GitHub repository.
+Security rules will be configured so that unauthenticated users cannot write learner data and users cannot access another learner's private task information.
 
 ---
 
-## 9. Firebase Data Flow
+# Firebase CRUD Plan
 
-The general data flow between the application and Firebase will be:
+| Operation | Firebase method | Application use         |
+| --------- | --------------- | ----------------------- |
+| Create    | POST            | Add a new task          |
+| Read      | GET             | Display tasks           |
+| Update    | PUT/PATCH       | Edit or complete a task |
+| Delete    | DELETE          | Remove a task           |
 
-```text
-┌──────────────┐
-│    Learner   │
-└──────┬───────┘
-       │
-       ↓
-┌──────────────┐
-│   Website    │
-└──────┬───────┘
-       │
-       ↓
-┌──────────────┐
-│  JavaScript  │
-└──────┬───────┘
-       │
-       ├──────────────→ Firebase Authentication
-       │
-       ↓
-┌─────────────────────┐
-│ Realtime Database   │
-└──────────┬──────────┘
-           │
-           ↓
-      Website Display
+The project requires documented REST CRUD operations and, in Month 2, evidence of POST, GET, PUT/PATCH, DELETE and verification through GET or an equivalent method.
+
+---
+
+# Planned JavaScript Functions
+
+The application will use reusable JavaScript functions to communicate with Firebase.
+
+```javascript
+"use strict";
+
+async function createTask(task) {
+    // Send a new task to Firebase
+}
+
+async function getTasks(userId) {
+    // Retrieve tasks belonging to the user
+}
+
+async function updateTask(taskId, updates) {
+    // Update an existing task
+}
+
+async function deleteTask(taskId) {
+    // Delete an existing task
+}
 ```
 
-For example, when a learner creates a task, the website collects the task information. JavaScript validates the input and sends the data to Firebase. The task is then stored in the database and can be retrieved later and displayed on the learner's dashboard.
+The functions will eventually use `fetch()` to communicate with the Firebase REST API.
 
 ---
 
-## 10. Firebase Requirements
+# Data Ownership
 
-The Firebase implementation must provide the following:
+Each task and booking will contain a `userId`.
 
-* Firebase Authentication.
-* Firebase Realtime Database.
-* Firebase REST API communication.
-* `GET` requests for retrieving information.
-* `POST` requests for creating information.
-* `PUT` or `PATCH` requests for updating information.
-* `DELETE` requests for removing information.
-* Authentication for protected operations.
-* Firebase Security Rules.
-* Input validation before data is stored.
-* Appropriate separation of learner data.
+Example:
 
----
-
-## 11. Example Application Flow
-
-A typical task creation process will work as follows:
-
-```text
-1. Learner logs in
-        ↓
-2. Firebase authenticates the learner
-        ↓
-3. Learner opens the task manager
-        ↓
-4. Learner enters task information
-        ↓
-5. JavaScript validates the information
-        ↓
-6. Application sends a POST request
-        ↓
-7. Firebase stores the task
-        ↓
-8. Application retrieves the updated data
-        ↓
-9. Task appears on the learner dashboard
+```javascript
+const task = {
+    userId: currentUser.uid,
+    title: "Complete project",
+    category: "JavaScript",
+    dueDate: "2026-09-10",
+    priority: "High",
+    completed: false,
+    createdAt: new Date().toISOString()
+};
 ```
 
-This same approach can be adapted for other Firebase features such as support bookings and game scores.
+This allows the application to associate records with the authenticated user.
 
 ---
 
-## 12. Security Considerations
+# Month 1 Firebase Outcome
 
-The following security practices will be followed:
+By the end of Month 1, the team will have:
 
-* User authentication will be handled by Firebase Authentication.
-* Passwords will not be stored in the Realtime Database.
-* Database access will be controlled using Firebase Security Rules.
-* Learners will not have unrestricted access to other learners' data.
-* User input will be validated before being stored.
-* Private credentials will not be placed in the source code.
-* Service-account files will not be committed to GitHub.
-* Database permissions will be tested before the application is submitted.
+* Designed the Firebase Realtime Database structure.
+* Identified the main database paths.
+* Defined the fields required by each record.
+* Planned ownership using `userId`.
+* Planned REST GET, POST, PUT/PATCH and DELETE operations.
+* Planned Firebase security requirements.
+* Planned reusable JavaScript functions for Firebase communication.
+* Prepared the application foundation for the Month 2 Firebase implementation.
 
----
+The full Firebase authentication, secure rules, CRUD implementation and REST evidence are part of the Month 2 requirements.
 
-## 13. Conclusion
-
-Firebase will provide the backend services required by the Learner Support Portal.
-
-Firebase Authentication will manage learner accounts, while the Realtime Database will store application data such as tasks, support bookings, game scores and learning resources.
-
-The REST API will allow the website to perform the required CRUD operations. Authentication, validation and Firebase Security Rules will be used to control access and protect the stored information.
-
-This setup will provide the project with a suitable backend while keeping the database structure organised and easy to maintain.
