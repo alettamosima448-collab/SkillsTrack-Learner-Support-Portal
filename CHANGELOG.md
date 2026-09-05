@@ -6,7 +6,7 @@ All notable changes to the Learner Support Portal project will be documented in 
 
 ### Added
 
-- Created the initial project repository.
+- Created the initial project repository. 
 - Created the project documentation structure.
 - Added the Research documentation.
 - Added the User Stories documentation.
