@@ -6,7 +6,7 @@ The Learner Support Portal is a web application designed to support learners by 
 
 The purpose of this research is to understand the needs of learners and identify the types of features that can make the portal useful and easy to use.
 
-## 2. Purpose of the Research
+## 2. Purpose of the Research 
 
 The research aims to understand the challenges learners may experience when managing their learning responsibilities and accessing support.
 
