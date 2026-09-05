@@ -6,7 +6,7 @@ A use case explains how a learner will use the Learner Support Portal to complet
 
 ## Use Case 1: Manage Learning Tasks
 
-**User:** Learner
+**User:** Learner 
 
 **Action:** The learner opens the learning tasks section and views or manages their tasks.
 
