@@ -6,7 +6,7 @@ User stories describe what learners need from the Learner Support Portal. They a
 
 ## User Stories
 
-### US01 - Manage Learning Tasks
+### US01 - Manage Learning Tasks 
 
 **As a learner, I want to add and manage my learning tasks so that I can keep track of the work I need to complete.**
 
