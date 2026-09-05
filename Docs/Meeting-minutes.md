@@ -4,7 +4,7 @@
 
 **Date:** [26 August 2026]  
 **Time:** [11:30]  
-**Location/Platform:** [via call]
+**Location/Platform:** [via call] 
 
 ### Attendees
 
