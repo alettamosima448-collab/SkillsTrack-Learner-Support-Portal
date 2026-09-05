@@ -6,7 +6,7 @@ The purpose of this test plan is to explain how the Learner Support Portal will 
 
 Testing will help the team find mistakes and make sure that the portal works correctly and is easy for learners to use.
 
-## 2. Purpose of Testing
+## 2. Purpose of Testing 
 
 The purpose of testing is to:
 
