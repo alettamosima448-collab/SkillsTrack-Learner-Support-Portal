@@ -1,6 +1,6 @@
 # Learner Support Portal - Requirements
 
-## 1. Introduction
+## 1. Introduction 
 
 The Learner Support Portal is a web application designed to help learners manage their learning tasks, support bookings and learning progress.
 
