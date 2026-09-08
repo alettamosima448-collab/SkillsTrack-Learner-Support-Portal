@@ -2,6 +2,23 @@
 
 ## Meeting 1
 
+**Date:** [26 August 2026]  
+**Time:** [11:30]  
+**Location/Platform:** [via call] 
+
+### Attendees
+
+- [Member 1# Learner Support Portal - Meeting Minutes
+
+## Meeting 1
+
+**Date:** [Insert date]  
+**Time:** [Insert time]  
+**Location/Platform:** [Insert location or online platform]
+
+### Attendees
+
+- [Member 1- Alleta]
 **Date:** [26/08/2026]  
 **Time:** [11;50]  
 **Location/Platform:** [phonecall meeting]
