@@ -1,147 +1,331 @@
-# Learner Support Portal - Requirements
+Requirements.md
 
-## 1. Introduction 
+## 1. Project Requirements
 
-The Learner Support Portal is a web application designed to help learners manage their learning tasks, support bookings and learning progress.
+The project is a **SkillsTrack Learner Support Portal**. The portal will help learners manage their learning tasks, support bookings and progress.
 
-This document explains what the Learner Support Portal should provide and what the project will use to build it.
+The application will be developed using:
 
----
-
-## 2. Main Purpose of the System
-
-The main purpose of the Learner Support Portal is to give learners one place where they can manage important parts of their learning and access support.
-
-The portal should focus on three main areas:
-
-1. Learning tasks
-2. Learner support bookings
-3. Learning progress
+* HTML5
+* CSS3
+* JavaScript ES6+
+* Firebase Realtime Database
+* Git and GitHub
+* Visual Studio Code
 
 ---
 
-## 3. User Requirements
+## 2. Main Features
 
-The system should help learners to:
+During Month 1, the following features will be planned and started:
 
-- Manage their learning tasks.
-- Access information about their learning tasks.
-- Access learner support.
-- Manage support bookings.
-- View their learning progress.
-- Use the portal easily.
+### User Account
 
----
+The system must allow users to:
 
-## 4. Functional Requirements
+* Register an account.
+* Log in.
+* Log out.
+* View their own information.
 
-Functional requirements describe what the system should be able to do.
+### Task Manager
 
-### 4.1 Learning Tasks
+The learner should be able to:
 
-The portal should provide learners with a way to manage their learning tasks.
+* Add a task.
+* View tasks.
+* Edit a task.
+* Mark a task as completed.
+* Delete a task.
+* Confirm before deleting a task.
 
-Learners should be able to view and manage information about their learning tasks.
+### Progress
 
-### 4.2 Support Bookings
+The dashboard should show:
 
-The portal should provide learners with access to learner support bookings.
+* Total tasks.
+* Completed tasks.
+* Outstanding tasks.
+* Calculated progress.
 
-Learners should be able to access information about their support bookings.
+### Support Booking
 
-### 4.3 Learning Progress
+The learner should be able to:
 
-The portal should allow learners to view information about their learning progress.
+* Enter a support topic.
+* Select a preferred date.
+* Add notes.
+* Submit a support request.
+* Receive feedback after submitting.
 
-Progress information should be presented in a way that learners can understand.
+### Search and Filter
 
----
+The application should allow the learner to search, filter or sort tasks.
 
-## 5. Usability Requirements
-
-The portal should be:
-
-- Simple to understand.
-- Easy to navigate.
-- Easy for learners to use.
-- Clear and organised.
-- Suitable for its intended users.
-
----
-
-## 6. Technical Requirements
-
-The project brief identifies the following technologies:
-
-- HTML5
-- CSS3
-- JavaScript ES6+
-- Firebase Realtime Database
-
-These technologies will be used to develop the Learner Support Portal.
+JavaScript array methods such as `map()`, `filter()` or `reduce()` should be used for meaningful results.
 
 ---
 
-## 7. Development Tools
+## 3. JavaScript Requirements
 
-The project will use:
+The Month 1 project must demonstrate the following JavaScript skills:
 
-- Git
-- GitHub
-- Visual Studio Code
+* Variables.
+* `let` and `const`.
+* Data types.
+* Operators.
+* Functions.
+* Parameters.
+* Return values.
+* Arrow functions.
+* Local and global scope.
+* Arrays.
+* Arrays of objects.
+* Loops.
+* Conditional statements.
+* `map()`.
+* `filter()`.
+* `reduce()`.
+* Event listeners.
+* DOM manipulation.
 
-Git and GitHub will be used to manage the project and track contributions from team members.
-
-Visual Studio Code will be used as a development environment.
-
----
-
-## 8. Data Requirements
-
-The project will use Firebase Realtime Database as the database technology.
-
-The database will be used to store and manage information required by the application.
-
-The exact information stored will be confirmed as the project requirements are developed.
-
----
-
-## 9. Documentation Requirements
-
-The project must contain documentation for important parts of the development process.
-
-This includes:
-
-- Client Brief
-- Requirements
-- Research
-- Meeting Minutes
-- User Stories
-- Use Cases
-- Wireframes
-- UI Designs
-- Test Plan
+The code should use clear names, proper indentation, comments where needed and good file organisation.
 
 ---
 
-## 10. Project Requirements Summary
+## 4. Firebase Requirements
 
-The Learner Support Portal should provide learners with a simple way to:
+The project will use **Firebase Realtime Database**.
 
-- Manage learning tasks.
-- Access learner support bookings.
-- View learning progress.
+The database will be planned using these main sections:
 
-The system will be developed using HTML5, CSS3, JavaScript ES6+ and Firebase Realtime Database.
+```text
+users/
+tasks/
+bookings/
+scores/
+resources/
+```
 
-The project will be managed using Git and GitHub, with Visual Studio Code used for development.
+### Users
 
-The requirements may be updated as the team completes further research and develops the project.
+```text
+users/{uid}
+```
+
+Fields:
+
+```text
+displayName
+email
+role
+createdAt
+```
+
+### Tasks
+
+```text
+tasks/{taskId}
+```
+
+Fields:
+
+```text
+userId
+title
+category
+dueDate
+priority
+completed
+createdAt
+```
+
+### Bookings
+
+```text
+bookings/{bookingId}
+```
+
+Fields:
+
+```text
+userId
+topic
+preferredDate
+notes
+status
+```
+
+### Scores
+
+```text
+scores/{scoreId}
+```
+
+Fields:
+
+```text
+userId
+score
+duration
+completedAt
+```
+
+### Resources
+
+```text
+resources/{resourceId}
+```
+
+Fields:
+
+```text
+title
+type
+url
+description
+```
+
+The database structure follows the suggested structure in the project brief.
 
 ---
 
-## 11. Conclusion
+## 5. Firebase Security
 
-The Learner Support Portal is intended to make it easier for learners to manage their learning activities and access support.
+Firebase data must not be left open for unrestricted public writing.
 
-The requirements in this document will guide the team's research, design, development and testing of the system.
+The database should use the authenticated user's ID to identify ownership of their information.
+
+Passwords must be handled by Firebase Authentication and must not be saved in the database, cookies or source code.
+
+User input should also be validated before it is saved.
+
+---
+
+## 6. REST API Planning
+
+The Firebase Realtime Database REST API will be planned for the project.
+
+| Method | Purpose                      |
+| ------ | ---------------------------- |
+| GET    | Read data                    |
+| POST   | Create new data              |
+| PUT    | Replace existing data        |
+| PATCH  | Update part of existing data |
+| DELETE | Remove data                  |
+
+The REST requests must be authenticated or used in an assessor-controlled test environment.
+
+---
+
+## 7. Application Interface
+
+The Month 1 application should have a basic working interface with:
+
+* Navigation.
+* Main content.
+* Buttons.
+* Forms.
+* Dynamic content.
+* Basic validation.
+* User feedback.
+
+JavaScript should be used to create, change and remove DOM elements.
+
+---
+
+## 8. Cookie Preference
+
+The application should have one simple preference, such as a light or dark theme.
+
+The preference can be stored in a browser cookie.
+
+Example:
+
+```text
+theme=dark
+```
+
+The cookie must not contain passwords or sensitive information.
+
+---
+
+## 9. GitHub Requirements
+
+The team must set up a shared GitHub repository.
+
+The repository should contain:
+
+* `README.md`
+* `.gitignore`
+* Issues/tasks.
+* Feature branches.
+* Pull requests.
+* Commits from team members.
+* Basic CI check.
+
+Team members should make meaningful contributions and be able to explain their work.
+
+---
+
+## 10. Testing and Debugging
+
+Testing will be done while developing the project.
+
+At least three problems must be recorded.
+
+For each problem, the team should record:
+
+* What went wrong.
+* How the problem was found.
+* What caused it.
+* How it was fixed.
+* Whether the fix worked after testing.
+
+Browser developer tools, the console and debugging tools can be used.
+
+---
+
+## 11. Month 1 Deliverables
+
+By the end of Month 1, the project should have:
+
+* Problem statement.
+* Project scope.
+* Client requirements.
+* At least six user stories.
+* Acceptance criteria for the user stories.
+* Programming life-cycle plan.
+* Flowcharts or pseudocode.
+* Firebase data model.
+* REST endpoint plan.
+* Two planned classes or structured objects.
+* Configured IDE.
+* Formatter and linter.
+* Debugging tools.
+* GitHub repository.
+* README.
+* `.gitignore`.
+* Issues.
+* Branches.
+* Pull request evidence.
+* Basic CI check.
+* Working application shell.
+* JavaScript fundamentals.
+* Cookie preference prototype.
+* Confirmation dialog.
+* Redirect plan or prototype.
+* Print-function plan or prototype.
+* Testing and debugging record.
+* Assessor review record.
+* Month 1 reflection.
+
+These are the Month 1 deliverables listed in the assessment document.
+
+---
+
+## 12. Month 1 Goal
+
+The goal of Month 1 is to create a working foundation for the SkillsTrack Learner Support Portal.
+
+The project should have the basic interface, JavaScript functionality, Firebase database plan and GitHub workflow ready so that the more advanced development can be completed in Month 2.

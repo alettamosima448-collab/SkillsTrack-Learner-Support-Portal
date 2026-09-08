@@ -1,0 +1,348 @@
+# Firebase Realtime Database Plan
+
+## 1. Firebase Database
+
+The SkillsTrack Learner Support Portal will use **Firebase Realtime Database** to store application data. Firebase will allow the application to store, retrieve, update and delete learner information and application records.
+
+The database will contain the following main areas:
+
+```text
+users/
+    {uid}/
+        displayName
+        email
+        role
+        createdAt
+
+tasks/
+    {taskId}/
+        userId
+        title
+        category
+        dueDate
+        priority
+        completed
+        createdAt
+
+bookings/
+    {bookingId}/
+        userId
+        topic
+        preferredDate
+        notes
+        status
+
+scores/
+    {scoreId}/
+        userId
+        score
+        duration
+        completedAt
+
+resources/
+    {resourceId}/
+        title
+        type
+        url
+        description
+```
+
+This structure is based on the suggested Firebase structure in the project brief.
+
+---
+
+## 2. Users
+
+The `users` section stores basic information about registered users.
+
+Example:
+
+```text
+users/
+    abc123/
+        displayName: "Lerato"
+        email: "lerato@example.com"
+        role: "learner"
+        createdAt: "2026-08-31T10:00:00"
+```
+
+The `{uid}` represents the authenticated Firebase user's unique ID.
+
+The user's password will NOT be stored in the database. Passwords must be handled by Firebase Authentication.
+
+---
+
+## 3. Tasks
+
+The `tasks` section stores learner learning tasks.
+
+Example:
+
+```text
+tasks/
+    task001/
+        userId: "abc123"
+        title: "Complete JavaScript exercise"
+        category: "JavaScript"
+        dueDate: "2026-09-05"
+        priority: "High"
+        completed: false
+        createdAt: "2026-08-31T10:30:00"
+```
+
+The `userId` connects the task to the learner who created it.
+
+This allows the application to display the correct learner's tasks and calculate completed, outstanding and overdue work.
+
+---
+
+## 4. Support Bookings
+
+The `bookings` section stores support-session requests.
+
+Example:
+
+```text
+bookings/
+    booking001/
+        userId: "abc123"
+        topic: "JavaScript Functions"
+        preferredDate: "2026-09-03"
+        notes: "I need help understanding functions."
+        status: "pending"
+```
+
+The booking starts with a status such as `pending`. An assessor or administrator can update the booking status where that functionality is included in the approved scope.
+
+---
+
+## 5. Game Scores
+
+The `scores` section stores results from the mini-game or quiz.
+
+Example:
+
+```text
+scores/
+    score001/
+        userId: "abc123"
+        score: 80
+        duration: 45
+        completedAt: "2026-09-10T12:00:00"
+```
+
+The `userId` identifies which learner achieved the score.
+
+---
+
+## 6. Learning Resources
+
+The optional `resources` section stores learning resources.
+
+Example:
+
+```text
+resources/
+    resource001/
+        title: "JavaScript Functions"
+        type: "article"
+        url: "https://example.com/javascript-functions"
+        description: "Introduction to JavaScript functions."
+```
+
+---
+
+# REST API Plan
+
+The application will use the Firebase Realtime Database REST API to communicate with Firebase.
+
+## GET — Read Data
+
+GET will be used to retrieve data from Firebase.
+
+Example:
+
+```text
+GET /tasks.json
+```
+
+Purpose:
+
+* Retrieve learner tasks.
+* Display tasks on the dashboard.
+* Calculate progress.
+* Search and filter task information.
+
+---
+
+## POST — Create Data
+
+POST will be used when a new record needs to be created.
+
+Example:
+
+```text
+POST /tasks.json
+```
+
+Purpose:
+
+* Create a new learning task.
+* Firebase generates a unique task ID.
+
+---
+
+## PUT — Replace Data
+
+PUT will be used when an existing Firebase record needs to be completely replaced.
+
+Example:
+
+```text
+PUT /tasks/{taskId}.json
+```
+
+Purpose:
+
+* Replace all information belonging to a specific task.
+
+---
+
+## PATCH — Update Data
+
+PATCH will be used to change selected fields without replacing the entire record.
+
+Example:
+
+```text
+PATCH /tasks/{taskId}.json
+```
+
+Purpose:
+
+* Change the task's completion status.
+* Change the priority.
+* Change the due date.
+
+For example:
+
+```json
+{
+    "completed": true
+}
+```
+
+---
+
+## DELETE — Delete Data
+
+DELETE will be used to remove a task.
+
+Example:
+
+```text
+DELETE /tasks/{taskId}.json
+```
+
+Before deleting a task, the application will show a confirmation dialog so that the user does not accidentally delete important information.
+
+---
+
+# Firebase Security Plan
+
+The database must not allow unrestricted public write access. Users should only access information appropriate to their authenticated identity and role.
+
+The application will use the authenticated user's Firebase UID to identify ownership.
+
+For example:
+
+```text
+tasks/
+    task001/
+        userId: "abc123"
+```
+
+If the authenticated user has UID `abc123`, the application can determine that the task belongs to that user.
+
+Security rules will be configured so that unauthenticated users cannot write learner data and users cannot access another learner's private task information.
+
+---
+
+# Firebase CRUD Plan
+
+| Operation | Firebase method | Application use         |
+| --------- | --------------- | ----------------------- |
+| Create    | POST            | Add a new task          |
+| Read      | GET             | Display tasks           |
+| Update    | PUT/PATCH       | Edit or complete a task |
+| Delete    | DELETE          | Remove a task           |
+
+The project requires documented REST CRUD operations and, in Month 2, evidence of POST, GET, PUT/PATCH, DELETE and verification through GET or an equivalent method.
+
+---
+
+# Planned JavaScript Functions
+
+The application will use reusable JavaScript functions to communicate with Firebase.
+
+```javascript
+"use strict";
+
+async function createTask(task) {
+    // Send a new task to Firebase
+}
+
+async function getTasks(userId) {
+    // Retrieve tasks belonging to the user
+}
+
+async function updateTask(taskId, updates) {
+    // Update an existing task
+}
+
+async function deleteTask(taskId) {
+    // Delete an existing task
+}
+```
+
+The functions will eventually use `fetch()` to communicate with the Firebase REST API.
+
+---
+
+# Data Ownership
+
+Each task and booking will contain a `userId`.
+
+Example:
+
+```javascript
+const task = {
+    userId: currentUser.uid,
+    title: "Complete project",
+    category: "JavaScript",
+    dueDate: "2026-09-10",
+    priority: "High",
+    completed: false,
+    createdAt: new Date().toISOString()
+};
+```
+
+This allows the application to associate records with the authenticated user.
+
+---
+
+# Month 1 Firebase Outcome
+
+By the end of Month 1, the team will have:
+
+* Designed the Firebase Realtime Database structure.
+* Identified the main database paths.
+* Defined the fields required by each record.
+* Planned ownership using `userId`.
+* Planned REST GET, POST, PUT/PATCH and DELETE operations.
+* Planned Firebase security requirements.
+* Planned reusable JavaScript functions for Firebase communication.
+* Prepared the application foundation for the Month 2 Firebase implementation.
+
+The full Firebase authentication, secure rules, CRUD implementation and REST evidence are part of the Month 2 requirements.
+
